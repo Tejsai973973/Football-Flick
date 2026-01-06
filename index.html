@@ -114,21 +114,25 @@
     </div>
 
     <!-- UI Header -->
-    <div id="game-ui" class="absolute top-4 w-full px-8 flex justify-between items-center z-10 pointer-events-none opacity-0 transition-opacity duration-500">
-        <div class="flex flex-col items-center w-24">
-            <span class="text-blue-400 font-bold text-xl">BLUE</span>
-            <span id="score-blue" class="text-4xl font-black">0</span>
+    <div id="game-ui" class="absolute top-4 w-full px-2 md:px-8 flex justify-between items-start z-10 pointer-events-none opacity-0 transition-opacity duration-500">
+        <!-- Blue Score & Timer -->
+        <div class="flex flex-col items-center w-24 md:w-32">
+            <span class="text-blue-400 font-bold text-sm md:text-xl">BLUE</span>
+            <span id="score-blue" class="text-4xl md:text-5xl font-black drop-shadow-lg">0</span>
+            <div id="timer-blue" class="mt-2 text-3xl font-mono font-black text-white bg-blue-600/80 px-3 rounded-lg shadow-lg opacity-0 transition-opacity duration-300">15.0</div>
         </div>
         
-        <div class="bg-gray-800/80 px-6 py-2 rounded-full border border-gray-600 min-w-[200px] text-center shadow-lg backdrop-blur-sm flex flex-col items-center">
-            <span id="turn-indicator" class="font-bold text-lg text-blue-400">BLUE'S TURN</span>
-            <span id="timer-display" class="text-3xl font-mono font-black text-white my-1 drop-shadow-md">15.0</span>
-            <div class="text-xs text-gray-400">FIRST TO 2 WINS</div>
+        <!-- Center Status -->
+        <div class="mt-2 bg-gray-800/80 px-4 py-1 md:px-6 md:py-2 rounded-full border border-gray-600 min-w-[140px] md:min-w-[200px] text-center shadow-lg backdrop-blur-sm flex flex-col items-center">
+            <span id="turn-indicator" class="font-bold text-sm md:text-lg text-blue-400">BLUE'S TURN</span>
+            <div class="text-[10px] md:text-xs text-gray-400">FIRST TO 2 WINS</div>
         </div>
 
-        <div class="flex flex-col items-center w-24">
-            <span class="text-red-400 font-bold text-xl">RED</span>
-            <span id="score-red" class="text-4xl font-black">0</span>
+        <!-- Red Score & Timer -->
+        <div class="flex flex-col items-center w-24 md:w-32">
+            <span class="text-red-400 font-bold text-sm md:text-xl">RED</span>
+            <span id="score-red" class="text-4xl md:text-5xl font-black drop-shadow-lg">0</span>
+            <div id="timer-red" class="mt-2 text-3xl font-mono font-black text-white bg-red-600/80 px-3 rounded-lg shadow-lg opacity-0 transition-opacity duration-300">15.0</div>
         </div>
     </div>
 
@@ -197,7 +201,8 @@
     const gameContainer = document.getElementById('game-container');
     const gameUI = document.getElementById('game-ui');
     const instructions = document.getElementById('instructions');
-    const timerDisplay = document.getElementById('timer-display');
+    const timerBlueEl = document.getElementById('timer-blue');
+    const timerRedEl = document.getElementById('timer-red');
     
     // Online UI Refs
     const onlineMenu = document.getElementById('online-menu');
@@ -763,6 +768,7 @@
         
         gameState = 'PLAYING';
         isKickoff = true; // Set kickoff flag
+        resetTurnTimer();
         updateUI();
 
         // If AI's turn and AI mode (happens if Red conceded), trigger AI
@@ -941,17 +947,16 @@
         }
     }
 
+    function resetTurnTimer() {
+        turnTimer = TURN_TIME_LIMIT;
+    }
+
     function updateUI() {
         scoreBlueEl.textContent = scores.blue;
         scoreRedEl.textContent = scores.red;
         turnIndicator.textContent = `${turn}'S TURN`;
         turnIndicator.className = `font-bold text-lg ${turn === 'BLUE' ? 'text-blue-400' : 'text-red-400'}`;
         
-        // Reset Timer
-        turnTimer = TURN_TIME_LIMIT;
-        timerDisplay.textContent = turnTimer.toFixed(1);
-        timerDisplay.style.color = 'white';
-
         // Trigger AI if needed
         if (isVsAI && turn === 'RED' && gameState === 'PLAYING') {
             // Small delay for natural feel
@@ -1051,22 +1056,47 @@
         lastTime = timestamp;
 
         if (gameState === 'PLAYING') {
-            turnTimer -= dt;
-            if (turnTimer <= 0) {
-                // Timeout! Switch turn
-                turnTimer = TURN_TIME_LIMIT;
-                turn = turn === 'BLUE' ? 'RED' : 'BLUE';
-                // Cancel any active interaction
-                dragStart = null;
-                selectedEntity = null;
-                dragCurrent = null;
-                updateUI();
+            // Only Host updates timer logic (or local)
+            if (!isOnline || isHost) {
+                turnTimer -= dt;
+                if (turnTimer <= 0) {
+                    resetTurnTimer();
+                    turn = turn === 'BLUE' ? 'RED' : 'BLUE';
+                    dragStart = null;
+                    selectedEntity = null;
+                    dragCurrent = null;
+                    updateUI();
+                }
             }
-            // Visual Update
-            timerDisplay.textContent = Math.max(0, turnTimer).toFixed(1);
-            if (turnTimer <= 3.0) timerDisplay.style.color = '#ef4444'; 
-            else timerDisplay.style.color = 'white';
         }
+        
+        // Timer Visibility Logic
+        let showBlueTimer = false;
+        let showRedTimer = false;
+
+        if (isOnline) {
+            // Online: Only show MY timer when it's MY turn
+            if (isHost) {
+                // I am Blue
+                if (turn === 'BLUE') showBlueTimer = true;
+            } else {
+                // I am Red
+                if (turn === 'RED') showRedTimer = true;
+            }
+        } else if (isVsAI) {
+            // AI Mode: Only show Player (Blue) timer
+            if (turn === 'BLUE') showBlueTimer = true;
+        } else {
+            // Local PvP: Show whoever's turn it is
+            if (turn === 'BLUE') showBlueTimer = true;
+            else showRedTimer = true;
+        }
+
+        timerBlueEl.style.opacity = showBlueTimer ? '1' : '0';
+        timerRedEl.style.opacity = showRedTimer ? '1' : '0';
+        
+        if (showBlueTimer) timerBlueEl.textContent = Math.max(0, turnTimer).toFixed(1);
+        if (showRedTimer) timerRedEl.textContent = Math.max(0, turnTimer).toFixed(1);
 
         if (gameState !== 'GAME_OVER' && gameState !== 'MENU' && gameState !== 'MODE_SELECT') {
             checkCollisions();
@@ -1081,6 +1111,7 @@
                     gameState = 'PLAYING';
                     isKickoff = false; // Turn ended, so kickoff state is over
                     turn = turn === 'BLUE' ? 'RED' : 'BLUE';
+                    resetTurnTimer();
                     updateUI();
                 }
             }
