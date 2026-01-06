@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Football Flick</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <style>
         body {
             touch-action: none;
@@ -45,50 +44,7 @@
                 <span>👥</span>
                 <span>2 PLAYER</span>
             </button>
-            <button id="online-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-6 px-10 rounded-2xl transition transform hover:scale-105 shadow-lg text-xl flex flex-col items-center gap-2 border-b-4 border-purple-800">
-                <span>🌍</span>
-                <span>ONLINE 1v1</span>
-            </button>
         </div>
-    </div>
-
-    <!-- Online Menu -->
-    <div id="online-menu" class="absolute inset-0 bg-[#1a1a1a] z-40 flex flex-col items-center justify-center hidden">
-        <h2 class="text-4xl font-bold text-white mb-10">ONLINE MULTIPLAYER</h2>
-        <div class="flex gap-8">
-            <button id="host-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-6 px-10 rounded-2xl transition transform hover:scale-105 shadow-lg text-xl flex flex-col items-center gap-2 border-b-4 border-purple-800">
-                <span>📡</span>
-                <span>HOST GAME</span>
-            </button>
-            <button id="join-btn" class="bg-orange-600 hover:bg-orange-500 text-white font-bold py-6 px-10 rounded-2xl transition transform hover:scale-105 shadow-lg text-xl flex flex-col items-center gap-2 border-b-4 border-orange-800">
-                <span>🔗</span>
-                <span>JOIN GAME</span>
-            </button>
-        </div>
-        <button id="online-back-btn" class="mt-8 text-gray-400 hover:text-white underline">Back</button>
-    </div>
-
-    <!-- Waiting Screen -->
-    <div id="waiting-screen" class="absolute inset-0 bg-[#1a1a1a] z-40 flex flex-col items-center justify-center hidden">
-        <h2 class="text-3xl font-bold text-white mb-4">WAITING FOR OPPONENT...</h2>
-        <div class="bg-gray-800 p-6 rounded-xl border border-gray-600 flex flex-col items-center">
-            <span class="text-gray-400 mb-2">Share this Game ID:</span>
-            <div class="flex items-center gap-4">
-                <span id="my-id" class="text-5xl font-mono font-black text-blue-400 tracking-widest select-all">---</span>
-                <button id="copy-btn" class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded hover:scale-110 transition">📋</button>
-            </div>
-        </div>
-        <button id="cancel-host-btn" class="mt-8 text-red-400 hover:text-red-300 underline">Cancel</button>
-    </div>
-
-    <!-- Join Input Screen -->
-    <div id="join-screen" class="absolute inset-0 bg-[#1a1a1a] z-40 flex flex-col items-center justify-center hidden">
-        <h2 class="text-3xl font-bold text-white mb-8">JOIN GAME</h2>
-        <input type="text" id="join-id-input" placeholder="ENTER ID" class="bg-gray-800 text-white text-3xl font-mono font-bold py-4 px-8 rounded-xl border-2 border-gray-600 focus:border-blue-500 outline-none mb-6 text-center uppercase w-64" maxlength="4">
-        <button id="connect-btn" class="bg-green-600 hover:bg-green-500 text-white font-bold py-4 px-12 rounded-full transition transform hover:scale-105 shadow-lg text-xl border-b-4 border-green-800">
-            CONNECT
-        </button>
-        <button id="cancel-join-btn" class="mt-8 text-gray-400 hover:text-white underline">Cancel</button>
     </div>
 
     <!-- Formation Select Screen -->
@@ -114,25 +70,21 @@
     </div>
 
     <!-- UI Header -->
-    <div id="game-ui" class="absolute top-4 w-full px-2 md:px-8 flex justify-between items-start z-10 pointer-events-none opacity-0 transition-opacity duration-500">
-        <!-- Blue Score & Timer -->
-        <div class="flex flex-col items-center w-24 md:w-32">
-            <span class="text-blue-400 font-bold text-sm md:text-xl">BLUE</span>
-            <span id="score-blue" class="text-4xl md:text-5xl font-black drop-shadow-lg">0</span>
-            <div id="timer-blue" class="mt-2 text-3xl font-mono font-black text-white bg-blue-600/80 px-3 rounded-lg shadow-lg opacity-0 transition-opacity duration-300">15.0</div>
+    <div id="game-ui" class="absolute top-4 w-full px-8 flex justify-between items-center z-10 pointer-events-none opacity-0 transition-opacity duration-500">
+        <div class="flex flex-col items-center w-24">
+            <span class="text-blue-400 font-bold text-xl">BLUE</span>
+            <span id="score-blue" class="text-4xl font-black">0</span>
         </div>
         
-        <!-- Center Status -->
-        <div class="mt-2 bg-gray-800/80 px-4 py-1 md:px-6 md:py-2 rounded-full border border-gray-600 min-w-[140px] md:min-w-[200px] text-center shadow-lg backdrop-blur-sm flex flex-col items-center">
-            <span id="turn-indicator" class="font-bold text-sm md:text-lg text-blue-400">BLUE'S TURN</span>
-            <div class="text-[10px] md:text-xs text-gray-400">FIRST TO 2 WINS</div>
+        <div class="bg-gray-800/80 px-6 py-2 rounded-full border border-gray-600 min-w-[200px] text-center shadow-lg backdrop-blur-sm flex flex-col items-center">
+            <span id="turn-indicator" class="font-bold text-lg text-blue-400">BLUE'S TURN</span>
+            <span id="timer-display" class="text-3xl font-mono font-black text-white my-1 drop-shadow-md">15.0</span>
+            <div class="text-xs text-gray-400">FIRST TO 2 WINS</div>
         </div>
 
-        <!-- Red Score & Timer -->
-        <div class="flex flex-col items-center w-24 md:w-32">
-            <span class="text-red-400 font-bold text-sm md:text-xl">RED</span>
-            <span id="score-red" class="text-4xl md:text-5xl font-black drop-shadow-lg">0</span>
-            <div id="timer-red" class="mt-2 text-3xl font-mono font-black text-white bg-red-600/80 px-3 rounded-lg shadow-lg opacity-0 transition-opacity duration-300">15.0</div>
+        <div class="flex flex-col items-center w-24">
+            <span class="text-red-400 font-bold text-xl">RED</span>
+            <span id="score-red" class="text-4xl font-black">0</span>
         </div>
     </div>
 
@@ -156,23 +108,29 @@
 
 <script>
     // --- Constants & Config ---
-    const GAME_WIDTH = 1280;
-    const GAME_HEIGHT = 720;
+    let CANVAS_WIDTH = window.innerWidth;
+    let CANVAS_HEIGHT = window.innerHeight;
     
-    const PITCH_PADDING = 80;
-    const PITCH_X = PITCH_PADDING;
-    const PITCH_Y = PITCH_PADDING;
-    const PITCH_WIDTH = GAME_WIDTH - (PITCH_PADDING * 2);
-    const PITCH_HEIGHT = GAME_HEIGHT - (PITCH_PADDING * 2);
+    // Pitch dimensions with padding
+    // Dynamic padding: 15% of screen dimension to make court smaller and give more drag space
+    let PITCH_PADDING = Math.max(50, Math.min(CANVAS_WIDTH, CANVAS_HEIGHT) * 0.15);
+
+    let PITCH_X = PITCH_PADDING;
+    let PITCH_Y = PITCH_PADDING;
+    let PITCH_WIDTH = CANVAS_WIDTH - (PITCH_PADDING * 2);
+    let PITCH_HEIGHT = CANVAS_HEIGHT - (PITCH_PADDING * 2);
 
     const FRICTION = 0.98;
     const WALL_BOUNCE = 0.7;
     const PLAYER_BOUNCE = 0.8;
     const MAX_POWER = 15;
-    const GOAL_WIDTH = 220;
+    let GOAL_WIDTH = Math.min(CANVAS_HEIGHT * 0.25, CANVAS_WIDTH * 0.4); // Dynamic goal size, capped for portrait
     
-    const RADIUS_PLAYER = 25;
-    const RADIUS_BALL = 14;
+    // Entity Radii - slightly dynamic based on screen size, but bounded
+    // Increased minimum size for better touch targets on mobile
+    let SCALE_FACTOR = Math.min(CANVAS_WIDTH, CANVAS_HEIGHT) / 800;
+    let RADIUS_PLAYER = Math.max(22, 22 * SCALE_FACTOR);
+    let RADIUS_BALL = Math.max(13, 13 * SCALE_FACTOR);
     
     const MASS_PLAYER = 2;
     const MASS_BALL = 1;
@@ -201,53 +159,52 @@
     const gameContainer = document.getElementById('game-container');
     const gameUI = document.getElementById('game-ui');
     const instructions = document.getElementById('instructions');
-    const timerBlueEl = document.getElementById('timer-blue');
-    const timerRedEl = document.getElementById('timer-red');
-    
-    // Online UI Refs
-    const onlineMenu = document.getElementById('online-menu');
-    const waitingScreen = document.getElementById('waiting-screen');
-    const joinScreen = document.getElementById('join-screen');
-    const myIdDisplay = document.getElementById('my-id');
-    const joinIdInput = document.getElementById('join-id-input');
+    const timerDisplay = document.getElementById('timer-display');
 
     let selectedFormation = 'BALANCED'; // BALANCED, DEFENSIVE, OFFENSIVE
-    
-    // Online State
-    let isOnline = false;
-    let isHost = false;
-    let peer = null;
-    let conn = null;
-    let clientFormation = 'BALANCED'; // For Host to know
-    let onlineId = '';
     
     // Timer State
     const TURN_TIME_LIMIT = 15.0;
     let turnTimer = TURN_TIME_LIMIT;
     let lastTime = 0;
 
-    // Display Scaling
-    let scale = 1;
-    let offsetX = 0;
-    let offsetY = 0;
+    // Handle Resize
+    window.addEventListener('resize', () => {
+        CANVAS_WIDTH = window.innerWidth;
+        CANVAS_HEIGHT = window.innerHeight;
+        
+        // Recalculate dynamic values
+        PITCH_PADDING = Math.max(50, Math.min(CANVAS_WIDTH, CANVAS_HEIGHT) * 0.15);
+        
+        PITCH_X = PITCH_PADDING;
+        PITCH_Y = PITCH_PADDING;
+        PITCH_WIDTH = CANVAS_WIDTH - (PITCH_PADDING * 2);
+        PITCH_HEIGHT = CANVAS_HEIGHT - (PITCH_PADDING * 2);
+        
+        SCALE_FACTOR = Math.min(CANVAS_WIDTH, CANVAS_HEIGHT) / 800;
+        RADIUS_PLAYER = Math.max(22, 22 * SCALE_FACTOR);
+        RADIUS_BALL = Math.max(13, 13 * SCALE_FACTOR);
+        
+        // Resize existing entities proportional to new scale? 
+        // For simplicity, we just update future entities or reset. 
+        // Ideally, we'd update current entity radii, but they get reset on goals anyway.
+        // We will just update radii for next draw calls for consistency if we wanted, 
+        // but since `radius` is a property of Entity, we'd have to iterate.
+        // Let's just update the global constants which will affect new entities/resets.
+        // To fix current view, let's update current entities radius:
+        entities.forEach(e => {
+            if(e.type === 'player') e.radius = RADIUS_PLAYER;
+            if(e.type === 'ball') e.radius = RADIUS_BALL;
+        });
 
-    function handleResize() {
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
-        
-        const scaleX = windowWidth / GAME_WIDTH;
-        const scaleY = windowHeight / GAME_HEIGHT;
-        scale = Math.min(scaleX, scaleY);
-        
-        canvas.width = windowWidth;
-        canvas.height = windowHeight;
-        
-        offsetX = (windowWidth - GAME_WIDTH * scale) / 2;
-        offsetY = (windowHeight - GAME_HEIGHT * scale) / 2;
-    }
-    
-    window.addEventListener('resize', handleResize);
-    handleResize();
+        canvas.width = CANVAS_WIDTH;
+        canvas.height = CANVAS_HEIGHT;
+        GOAL_WIDTH = Math.min(CANVAS_HEIGHT * 0.25, CANVAS_WIDTH * 0.4);
+    });
+
+    // Set canvas resolution
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
 
     let gameState = 'MENU'; // MENU, MODE_SELECT, PLAYING, MOVING, SCORING, GAME_OVER, FOUL
     let turn = 'BLUE'; 
@@ -384,110 +341,17 @@
             showFormationSelect();
         });
 
-        function handleFormationChoice(fmt) {
-            selectedFormation = fmt;
-            
-            if (isOnline) {
-                formationScreen.classList.add('hidden');
-                formationScreen.classList.remove('flex');
-                
-                if (isHost) {
-                     // Host picked, now wait for client to pick
-                     waitingScreen.classList.remove('hidden');
-                     waitingScreen.classList.add('flex');
-                     document.querySelector('#waiting-screen h2').textContent = "OPPONENT SELECTING...";
-                     
-                     if (conn && conn.open) {
-                         conn.send({ type: 'FORMATION_REQUEST' });
-                     }
-                } else {
-                     // Client picked, send to host
-                     conn.send({ type: 'FORMATION_RESPONSE', formation: selectedFormation });
-                     instructions.textContent = "Waiting for Host to start game...";
-                     instructions.classList.remove('opacity-0');
-                }
-            } else {
-                startGame();
-            }
-        }
-
-        document.getElementById('form-balanced').addEventListener('click', () => handleFormationChoice('BALANCED'));
-        document.getElementById('form-defensive').addEventListener('click', () => handleFormationChoice('DEFENSIVE'));
-        document.getElementById('form-offensive').addEventListener('click', () => handleFormationChoice('OFFENSIVE'));
-
-        // Online Listeners
-        document.getElementById('online-btn').addEventListener('click', () => {
-            modeScreen.classList.add('hidden');
-            modeScreen.classList.remove('flex');
-            onlineMenu.classList.remove('hidden');
-            onlineMenu.classList.add('flex');
+        document.getElementById('form-balanced').addEventListener('click', () => {
+            selectedFormation = 'BALANCED';
+            startGame();
         });
-
-        document.getElementById('online-back-btn').addEventListener('click', () => {
-            onlineMenu.classList.add('hidden');
-            onlineMenu.classList.remove('flex');
-            modeScreen.classList.remove('hidden');
-            modeScreen.classList.add('flex');
+        document.getElementById('form-defensive').addEventListener('click', () => {
+            selectedFormation = 'DEFENSIVE';
+            startGame();
         });
-
-        document.getElementById('host-btn').addEventListener('click', () => {
-            isOnline = true;
-            isHost = true;
-            onlineMenu.classList.add('hidden');
-            onlineMenu.classList.remove('flex');
-            
-            // Show waiting screen immediately so user sees Code
-            waitingScreen.classList.remove('hidden');
-            waitingScreen.classList.add('flex');
-            document.querySelector('#waiting-screen h2').textContent = "WAITING FOR OPPONENT...";
-            
-            initPeer(); 
-        });
-
-        document.getElementById('join-btn').addEventListener('click', () => {
-            isOnline = true;
-            isHost = false;
-            onlineMenu.classList.add('hidden');
-            onlineMenu.classList.remove('flex');
-            joinScreen.classList.remove('hidden');
-            joinScreen.classList.add('flex');
-        });
-
-        document.getElementById('cancel-host-btn').addEventListener('click', () => {
-             // Reset peer
-             if(peer) peer.destroy();
-             isOnline = false;
-             waitingScreen.classList.add('hidden');
-             waitingScreen.classList.remove('flex');
-             onlineMenu.classList.remove('hidden');
-             onlineMenu.classList.add('flex');
-        });
-
-        document.getElementById('connect-btn').addEventListener('click', () => {
-            const id = joinIdInput.value.toUpperCase();
-            if (id.length === 4) {
-                initPeer(id);
-                joinScreen.classList.add('hidden');
-                joinScreen.classList.remove('flex');
-                // Show generic loading?
-                instructions.textContent = "Connecting...";
-                instructions.classList.remove('opacity-0');
-            }
-        });
-
-        document.getElementById('cancel-join-btn').addEventListener('click', () => {
-            isOnline = false;
-            joinScreen.classList.add('hidden');
-            joinScreen.classList.remove('flex');
-            onlineMenu.classList.remove('hidden');
-            onlineMenu.classList.add('flex');
-        });
-        
-        document.getElementById('copy-btn').addEventListener('click', () => {
-            navigator.clipboard.writeText(onlineId);
-            const btn = document.getElementById('copy-btn');
-            btn.textContent = '✅';
-            setTimeout(() => btn.textContent = '📋', 1000);
+        document.getElementById('form-offensive').addEventListener('click', () => {
+            selectedFormation = 'OFFENSIVE';
+            startGame();
         });
     }
 
@@ -498,170 +362,6 @@
         formationScreen.classList.add('flex');
     }
 
-    function generateId() {
-        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        let result = '';
-        for (let i = 0; i < 4; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return result;
-    }
-
-    function initPeer(targetId = null) {
-        if (peer) peer.destroy();
-        
-        if (isHost) {
-            onlineId = generateId();
-            peer = new Peer(onlineId, { debug: 1 }); // Use debug 1 or 2
-        } else {
-            peer = new Peer(null, { debug: 1 });
-        }
-
-        peer.on('open', (id) => {
-            console.log('My Peer ID:', id);
-            if (isHost) {
-                myIdDisplay.textContent = onlineId;
-            } else {
-                // Connect to host
-                conn = peer.connect(targetId);
-                setupConnection();
-            }
-        });
-
-        peer.on('connection', (c) => {
-            // Host receives connection
-            if (isHost) {
-                conn = c;
-                setupConnection();
-                
-                // Connection established, now go to formation select
-                waitingScreen.classList.add('hidden');
-                waitingScreen.classList.remove('flex');
-                showFormationSelect();
-            }
-        });
-        
-        peer.on('error', (err) => {
-            console.error(err);
-            alert("Connection Error: " + err.type);
-            // reset UI?
-        });
-    }
-
-    function setupConnection() {
-        conn.on('open', () => {
-            console.log('Connected!');
-            
-            if (!isHost) {
-                 // Client connected, wait for formation request
-                 // Actually Client needs to select formation first? 
-                 // We will show formation screen to client now
-                 instructions.classList.add('opacity-0'); // Hide "Connecting..."
-                 showFormationSelect();
-            }
-        });
-
-        conn.on('data', (data) => {
-            handleData(data);
-        });
-        
-        conn.on('close', () => {
-            alert('Opponent Disconnected');
-            location.reload();
-        });
-    }
-
-    function handleData(data) {
-        if (isHost) {
-            // Host logic
-            if (data.type === 'FORMATION_RESPONSE') {
-                clientFormation = data.formation;
-                // Both ready
-                waitingScreen.classList.add('hidden');
-                waitingScreen.classList.remove('flex');
-                startGame();
-                
-                // Send Initial State immediately
-                broadcastState();
-            } else if (data.type === 'SHOOT') {
-                // Client wants to shoot
-                // Verify it's RED turn
-                if (turn === 'RED' && gameState === 'PLAYING') {
-                     // Find the entity
-                     // We need to identify entity by index or position? 
-                     // Since entities array might change order if filtered... 
-                     // Actually resetPositions always pushes in same order.
-                     // 0 is ball. 1-5 Blue. 6-10 Red.
-                     // Let's rely on index for simplicity in this prototype
-                     const entIndex = data.index;
-                     if (entities[entIndex] && entities[entIndex].team === 'RED') {
-                         entities[entIndex].vel = new Vector(data.vel.x, data.vel.y);
-                         gameState = 'MOVING';
-                         selectedEntity = null;
-                         dragStart = null;
-                     }
-                }
-            }
-        } else {
-            // Client logic
-            if (data.type === 'FORMATION_REQUEST') {
-                // Host wants our formation.
-                // We might have already selected it?
-                if (!formationScreen.classList.contains('hidden')) {
-                    // Still selecting
-                } else {
-                    // Already selected
-                    conn.send({ type: 'FORMATION_RESPONSE', formation: selectedFormation });
-                }
-            } else if (data.type === 'GAME_STATE') {
-                // Sync state
-                gameState = data.gameState;
-                turn = data.turn;
-                scores = data.scores;
-                turnTimer = data.timer;
-                
-                // Sync Entities
-                if (data.entities.length === entities.length) {
-                    for(let i=0; i<entities.length; i++) {
-                        entities[i].pos.x = data.entities[i].x;
-                        entities[i].pos.y = data.entities[i].y;
-                        entities[i].vel.x = data.entities[i].vx;
-                        entities[i].vel.y = data.entities[i].vy;
-                        entities[i].radius = data.entities[i].r;
-                    }
-                } else {
-                    // Length mismatch (goal reset?), re-sync fully?
-                    // Usually implies a resetPositions call missed on client or desync
-                    // For now, trust the host's positions if count matches roughly
-                }
-                
-                updateUI();
-            } else if (data.type === 'START_GAME') {
-                 // Trigger start game locally (visuals)
-                 startGame();
-            }
-        }
-    }
-
-    function broadcastState() {
-        if (!conn || !conn.open) return;
-        
-        const entData = entities.map(e => ({
-            x: e.pos.x, y: e.pos.y,
-            vx: e.vel.x, vy: e.vel.y,
-            r: e.radius
-        }));
-        
-        conn.send({
-            type: 'GAME_STATE',
-            gameState: gameState,
-            turn: turn,
-            scores: scores,
-            timer: turnTimer,
-            entities: entData
-        });
-    }
-
     function startGame() {
         formationScreen.classList.add('hidden');
         formationScreen.classList.remove('flex');
@@ -669,19 +369,6 @@
         gameContainer.classList.remove('opacity-0');
         gameUI.classList.remove('opacity-0');
         instructions.classList.remove('opacity-0');
-        
-        if (isOnline) {
-             if (!isHost) {
-                 gameUI.classList.add('flex-row-reverse');
-             } else {
-                 gameUI.classList.remove('flex-row-reverse');
-             }
-             instructions.textContent = isHost ? "Online: YOU ARE BLUE (HOST)" : "Online: YOU ARE RED (CLIENT)";
-             if(isHost) conn.send({ type: 'START_GAME' });
-        } else {
-             gameUI.classList.remove('flex-row-reverse');
-             instructions.textContent = "Touch and drag to shoot. First to 2 goals wins. No direct goals from kickoff!";
-        }
         
         // isVsAI is already set
         scores = { blue: 0, red: 0 };
@@ -741,34 +428,17 @@
         }
 
         // Red Team (Right)
-        let redForm = isOnline ? clientFormation : 'BALANCED';
-        
         // GK
         entities.push(new Entity(startX + w - goalDist, centerY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
-
-        if (redForm === 'DEFENSIVE') {
-             // 1-3-1
-            entities.push(new Entity(startX + w - defDist, centerY - spreadY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
-            entities.push(new Entity(startX + w - defDist, centerY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
-            entities.push(new Entity(startX + w - defDist, centerY + spreadY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
-            entities.push(new Entity(startX + w - attDist, centerY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
-        } else if (redForm === 'OFFENSIVE') {
-            // 1-1-3
-            entities.push(new Entity(startX + w - defDist, centerY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
-            entities.push(new Entity(startX + w - attDist, centerY - spreadY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
-            entities.push(new Entity(startX + w - attDist, centerY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
-            entities.push(new Entity(startX + w - attDist, centerY + spreadY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
-        } else {
-            // BALANCED
-            entities.push(new Entity(startX + w - defDist, centerY - spreadY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
-            entities.push(new Entity(startX + w - defDist, centerY + spreadY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
-            entities.push(new Entity(startX + w - attDist, centerY - attSpreadY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
-            entities.push(new Entity(startX + w - attDist, centerY + attSpreadY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
-        }
+        // Defenders
+        entities.push(new Entity(startX + w - defDist, centerY - spreadY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
+        entities.push(new Entity(startX + w - defDist, centerY + spreadY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
+        // Attackers
+        entities.push(new Entity(startX + w - attDist, centerY - attSpreadY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
+        entities.push(new Entity(startX + w - attDist, centerY + attSpreadY, RADIUS_PLAYER, MASS_PLAYER, 'player', 'RED'));
         
         gameState = 'PLAYING';
         isKickoff = true; // Set kickoff flag
-        resetTurnTimer();
         updateUI();
 
         // If AI's turn and AI mode (happens if Red conceded), trigger AI
@@ -783,8 +453,8 @@
             if (e.pos.y - e.radius < PITCH_Y) { e.pos.y = PITCH_Y + e.radius; e.vel.y *= -WALL_BOUNCE; } 
             else if (e.pos.y + e.radius > PITCH_Y + PITCH_HEIGHT) { e.pos.y = PITCH_Y + PITCH_HEIGHT - e.radius; e.vel.y *= -WALL_BOUNCE; }
 
-            const goalTop = (GAME_HEIGHT - GOAL_WIDTH) / 2;
-            const goalBottom = (GAME_HEIGHT + GOAL_WIDTH) / 2;
+            const goalTop = (CANVAS_HEIGHT - GOAL_WIDTH) / 2;
+            const goalBottom = (CANVAS_HEIGHT + GOAL_WIDTH) / 2;
 
             if (e.pos.x - e.radius < PITCH_X) {
                 const inGoal = e.pos.y > goalTop && e.pos.y < goalBottom;
@@ -920,7 +590,7 @@
         if (bestPlayer) {
             // Calculate shot vector
             // Target: slightly offset from ball center opposite to goal
-            const goalPos = new Vector(PITCH_X, GAME_HEIGHT / 2); // Blue goal
+            const goalPos = new Vector(PITCH_X, CANVAS_HEIGHT / 2); // Blue goal
             const ballToGoal = goalPos.sub(ball.pos).normalize();
             
             // We want to hit the ball such that it goes to goal
@@ -947,16 +617,17 @@
         }
     }
 
-    function resetTurnTimer() {
-        turnTimer = TURN_TIME_LIMIT;
-    }
-
     function updateUI() {
         scoreBlueEl.textContent = scores.blue;
         scoreRedEl.textContent = scores.red;
         turnIndicator.textContent = `${turn}'S TURN`;
         turnIndicator.className = `font-bold text-lg ${turn === 'BLUE' ? 'text-blue-400' : 'text-red-400'}`;
         
+        // Reset Timer
+        turnTimer = TURN_TIME_LIMIT;
+        timerDisplay.textContent = turnTimer.toFixed(1);
+        timerDisplay.style.color = 'white';
+
         // Trigger AI if needed
         if (isVsAI && turn === 'RED' && gameState === 'PLAYING') {
             // Small delay for natural feel
@@ -967,7 +638,7 @@
     function drawPitch() {
         // Draw background (gutter)
         ctx.fillStyle = '#111';
-        ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
         // Dynamic pitch elements
         const stripeWidth = PITCH_WIDTH / 10;
@@ -998,7 +669,7 @@
         ctx.fill();
 
         // Goals
-        const goalY = (GAME_HEIGHT - GOAL_WIDTH) / 2;
+        const goalY = (CANVAS_HEIGHT - GOAL_WIDTH) / 2;
         const goalDepth = PITCH_WIDTH * 0.05;
         
         // Left Goal Box
@@ -1056,97 +727,49 @@
         lastTime = timestamp;
 
         if (gameState === 'PLAYING') {
-            // Only Host updates timer logic (or local)
-            if (!isOnline || isHost) {
-                turnTimer -= dt;
-                if (turnTimer <= 0) {
-                    resetTurnTimer();
-                    turn = turn === 'BLUE' ? 'RED' : 'BLUE';
-                    dragStart = null;
-                    selectedEntity = null;
-                    dragCurrent = null;
-                    updateUI();
-                }
+            turnTimer -= dt;
+            if (turnTimer <= 0) {
+                // Timeout! Switch turn
+                turnTimer = TURN_TIME_LIMIT;
+                turn = turn === 'BLUE' ? 'RED' : 'BLUE';
+                // Cancel any active interaction
+                dragStart = null;
+                selectedEntity = null;
+                dragCurrent = null;
+                updateUI();
             }
+            // Visual Update
+            timerDisplay.textContent = Math.max(0, turnTimer).toFixed(1);
+            if (turnTimer <= 3.0) timerDisplay.style.color = '#ef4444'; 
+            else timerDisplay.style.color = 'white';
         }
-        
-        // Timer Visibility Logic
-        let showBlueTimer = false;
-        let showRedTimer = false;
-
-        if (isOnline) {
-            // Online: Only show MY timer when it's MY turn
-            if (isHost) {
-                // I am Blue
-                if (turn === 'BLUE') showBlueTimer = true;
-            } else {
-                // I am Red
-                if (turn === 'RED') showRedTimer = true;
-            }
-        } else if (isVsAI) {
-            // AI Mode: Only show Player (Blue) timer
-            if (turn === 'BLUE') showBlueTimer = true;
-        } else {
-            // Local PvP: Show whoever's turn it is
-            if (turn === 'BLUE') showBlueTimer = true;
-            else showRedTimer = true;
-        }
-
-        timerBlueEl.style.opacity = showBlueTimer ? '1' : '0';
-        timerRedEl.style.opacity = showRedTimer ? '1' : '0';
-        
-        if (showBlueTimer) timerBlueEl.textContent = Math.max(0, turnTimer).toFixed(1);
-        if (showRedTimer) timerRedEl.textContent = Math.max(0, turnTimer).toFixed(1);
 
         if (gameState !== 'GAME_OVER' && gameState !== 'MENU' && gameState !== 'MODE_SELECT') {
             checkCollisions();
             entities.forEach(e => e.update());
-            
-            if (isOnline && isHost) {
-                broadcastState();
-            }
 
             if (gameState === 'MOVING') {
                 if (!isMoving()) {
                     gameState = 'PLAYING';
                     isKickoff = false; // Turn ended, so kickoff state is over
                     turn = turn === 'BLUE' ? 'RED' : 'BLUE';
-                    resetTurnTimer();
                     updateUI();
                 }
             }
         }
 
         if (gameState !== 'MENU' && gameState !== 'MODE_SELECT') {
-            ctx.save();
-            
-            // Apply Logical Resolution Transform
-            ctx.translate(offsetX, offsetY);
-            ctx.scale(scale, scale);
-            
-            // Clipping to game area
-            ctx.beginPath();
-            ctx.rect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-            ctx.clip();
-
-            if (isOnline && !isHost) {
-                ctx.translate(GAME_WIDTH / 2, GAME_HEIGHT / 2);
-                ctx.rotate(Math.PI);
-                ctx.translate(-GAME_WIDTH / 2, -GAME_HEIGHT / 2);
-            }
-
             drawPitch();
             entities.forEach(e => e.draw());
             drawAiming();
-            ctx.restore();
         }
 
         if (gameState === 'SCORING' || gameState === 'FOUL') {
             ctx.save();
             ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             
-            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
             ctx.rotate(-0.1);
             
             ctx.font = '900 100px Arial';
@@ -1183,20 +806,9 @@
         const rect = canvas.getBoundingClientRect();
         const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
         const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
-        
-        // Raw Canvas Coords
-        let x = (clientX - rect.left);
-        let y = (clientY - rect.top);
-        
-        // To Logical Game Coords
-        x = (x - offsetX) / scale;
-        y = (y - offsetY) / scale;
-
-        if (isOnline && !isHost) {
-            x = GAME_WIDTH - x;
-            y = GAME_HEIGHT - y;
-        }
-        return { x, y };
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
     }
 
     canvas.addEventListener('mousedown', handleStart);
@@ -1210,11 +822,6 @@
         if (gameState !== 'PLAYING') return;
         if (isVsAI && turn === 'RED') return; // Can't move AI
         
-        if (isOnline) {
-            if (isHost && turn !== 'BLUE') return;
-            if (!isHost && turn !== 'RED') return;
-        }
-
         const pos = getMousePos(e);
         for (let ent of entities) {
             if (ent.type === 'player' && ent.team === turn) {
@@ -1246,26 +853,10 @@
         if (dist > 10) {
             const power = Math.min(dist / 10, MAX_POWER);
             const angle = Math.atan2(dy, dx);
-            const velX = Math.cos(angle) * power;
-            const velY = Math.sin(angle) * power;
+            selectedEntity.vel.x = Math.cos(angle) * power;
+            selectedEntity.vel.y = Math.sin(angle) * power;
             
-            if (isOnline && !isHost) {
-                const idx = entities.indexOf(selectedEntity);
-                conn.send({
-                    type: 'SHOOT',
-                    index: idx,
-                    vel: { x: velX, y: velY }
-                });
-                // Local prediction
-                selectedEntity.vel.x = velX;
-                selectedEntity.vel.y = velY;
-                gameState = 'MOVING';
-            } else {
-                selectedEntity.vel.x = velX;
-                selectedEntity.vel.y = velY;
-                gameState = 'MOVING';
-            }
-
+            gameState = 'MOVING';
             // Note: isKickoff is NOT cleared here. It clears when the move ends.
             // This is correct because the 'kickoff shot' is the one currently happening.
             
@@ -1280,10 +871,6 @@
     }
 
     restartBtn.addEventListener('click', () => {
-        if (isOnline) {
-            location.reload();
-            return;
-        }
         gameOverModal.classList.add('hidden');
         gameContainer.classList.add('opacity-0');
         gameUI.classList.add('opacity-0');
